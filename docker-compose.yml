@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+
+  user-service:
+    image: openjdk:17-jdk-alpine
+    container_name: userimage
+    ports:
+      - 8082:8082
+      - 8002:8002
+    expose:
+      - "8002"
+    depends_on:
+      - user-db
+    volumes:
+      - ./build/libs/SmarCity-0.0.1-SNAPSHOT.jar:/app/app.jar
+    working_dir: /app
+    entrypoint: java -Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8002 -jar /app/app.jar
+  agency-service:
+    image: openjdk:17-jdk-alpine
+    container_name: agencyimage
+    ports:
+      - 8081:8081
+      - 8001:8001
+    expose:
+      - "8001"
+    depends_on:
+      - agency-db
+    volumes:
+      - ../WasteManagementAgency/build/libs/WasteManagementAgency-0.0.1-SNAPSHOT.jar:/app/app.jar
+    working_dir: /app
+    entrypoint: java -Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8001 -jar /app/app.jar
+  munipaloffice-service:
+    image: openjdk:17-jdk-alpine
+    container_name: munipalofficeimage
+    ports:
+      - 8083:8083
+      - 8003:8003
+    expose:
+      - "8003"
+    depends_on:
+      - munipaloffice-db
+    volumes:
+      - ../MunicipalOffice/build/libs/MunicipalOffice-0.0.1-SNAPSHOT.jar:/app/app.jar
+    working_dir: /app
+    entrypoint: java -Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8003 -jar /app/app.jar
+  agency-db:
+    image: mongo:5.0
+    container_name: agencydb
+    command: mongod --port 27018
+    ports:
+      - 27018:27018
+  user-db:
+    image: mongo:5.0
+    container_name: userdb
+    command: mongod --port 27019
+    ports:
+      - 27019:27019
+  munipaloffice-db:
+    image: mongo:5.0
+    container_name: munipalofficedb
+    command: mongod --port 27020
+    ports:
+      - 27020:27020
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+

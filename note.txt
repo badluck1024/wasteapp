@@ -1,0 +1,18 @@
+dto (data transfer object) = model specializzato per trasferire dati, potrebbe non coincidere con il model dell' applicazione (potrei non voler trasferire alcuni dati tipo la password)
+
+domain = in pratica è il model
+
+il tag document indica il nome di una tabella
+ci abbiamo messo dentro user, poi abbiamo creato "userRepository" dentro la cartella repositories
+
+
+Parte sicurezza
+Gestita da "SecurityConfig"
+Problemi legati alla versione 6.1 di spring security
+
+Component e Service sono in pratica uguali
+La buona pratica è di usare Service per cose di business logic
+
+Authentication Manager: prende in carico la gestione dell'autenticazione
+
+Per ottenere il token, facciamo una post su: http://localhost:8080/api/users/authenticate, usando username e password di un utente veramente presente nel database
